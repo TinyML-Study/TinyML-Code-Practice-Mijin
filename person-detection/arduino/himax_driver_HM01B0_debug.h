@@ -20,7 +20,7 @@ limitations under the License.
 extern "C" {
 #endif
 
-#include "HM01B0.h"
+#include "himax_driver_HM01B0.h"
 
 //*****************************************************************************
 //

@@ -13,18 +13,28 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#include "tensorflow/lite/micro/examples/person_detection/image_provider.h"
+#if defined(ARDUINO)
+#include "arduino_HM01B0_platform.h"
+#endif  // defined(ARDUINO)
 
-#include "tensorflow/lite/micro/examples/person_detection/himax_driver/HM01B0.h"
-#include "tensorflow/lite/micro/examples/person_detection/himax_driver/HM01B0_RAW8_QVGA_8bits_lsb_5fps.h"
-#include "tensorflow/lite/micro/examples/person_detection/himax_driver/HM01B0_debug.h"
-#include "tensorflow/lite/micro/examples/person_detection/himax_driver/HM01B0_optimized.h"
-#include "tensorflow/lite/micro/examples/person_detection/himax_driver/platform_Sparkfun_Edge.h"
+#if defined(ARDUINO) && !defined(ARDUINO_SFE_EDGE)
+#define ARDUINO_EXCLUDE_CODE
+#endif  // defined(ARDUINO) && !defined(ARDUINO_SFE_EDGE)
+
+#ifndef ARDUINO_EXCLUDE_CODE
+
+#include "image_provider.h"
+
+#include "himax_driver_HM01B0.h"
+#include "himax_driver_HM01B0_RAW8_QVGA_8bits_lsb_5fps.h"
+#include "himax_driver_HM01B0_debug.h"
+#include "himax_driver_HM01B0_optimized.h"
 
 // These are headers from Ambiq's Apollo3 SDK.
-#include "am_bsp.h"         // NOLINT
-#include "am_mcu_apollo.h"  // NOLINT
-#include "am_util.h"        // NOLINT
+#include "am_bsp.h"
+#include "am_mcu_apollo.h"
+#include "am_util.h"
+#include "third_party/gemmlowp/internal/detect_platform.h"
 
 // #define DEMO_HM01B0_FRAMEBUFFER_DUMP_ENABLE
 
@@ -79,7 +89,7 @@ static constexpr int kFramesToInitialize = 4;
 
 bool g_is_camera_initialized = false;
 
-void boost_mode_enable(tflite::ErrorReporter* error_reporter, bool bEnable) {
+void burst_mode_enable(tflite::ErrorReporter* error_reporter, bool bEnable) {
   am_hal_burst_avail_e eBurstModeAvailable;
   am_hal_burst_mode_e eBurstMode;
 
@@ -143,7 +153,16 @@ TfLiteStatus InitCamera(tflite::ErrorReporter* error_reporter) {
   // Enable interrupts so we can receive messages from the boot host.
   am_hal_interrupt_master_enable();
 
-  boost_mode_enable(error_reporter, true);
+  burst_mode_enable(error_reporter, true);
+
+  // Turn on the 1.8V regulator for DVDD on the camera.
+  am_hal_gpio_pinconfig(AM_BSP_GPIO_CAMERA_HM01B0_DVDDEN,
+                        g_AM_HAL_GPIO_OUTPUT_12);
+  am_hal_gpio_output_set(AM_BSP_GPIO_CAMERA_HM01B0_DVDDEN);
+
+  // Configure Red LED for debugging.
+  am_devices_led_init((am_bsp_psLEDs + AM_BSP_LED_RED));
+  am_devices_led_off(am_bsp_psLEDs, AM_BSP_LED_RED);
 
   hm01b0_power_up(&s_HM01B0Cfg);
 
@@ -155,17 +174,15 @@ TfLiteStatus InitCamera(tflite::ErrorReporter* error_reporter) {
   // TODO(njeff): check the delay time to just fit the spec.
   am_util_delay_ms(1);
 
-  hm01b0_init_if(&s_HM01B0Cfg);
+  if (HM01B0_ERR_OK != hm01b0_init_if(&s_HM01B0Cfg)) {
+    return kTfLiteError;
+  }
 
-  hm01b0_init_system(&s_HM01B0Cfg, (hm_script_t*)sHM01B0InitScript,
-                     sizeof(sHM01B0InitScript) / sizeof(hm_script_t));
-
-  // Put camera into streaming mode - this makes it so that the camera
-  // constantly captures images.  It is still OK to read and image since the
-  // camera uses a double-buffered input.  This means there is always one valid
-  // image to read while the other buffer fills.  Streaming mode allows the
-  // camera to perform auto exposure constantly.
-  hm01b0_set_mode(&s_HM01B0Cfg, HM01B0_REG_MODE_SELECT_STREAMING, 0);
+  if (HM01B0_ERR_OK !=
+      hm01b0_init_system(&s_HM01B0Cfg, (hm_script_t*)sHM01B0InitScript,
+                         sizeof(sHM01B0InitScript) / sizeof(hm_script_t))) {
+    return kTfLiteError;
+  }
 
   return kTfLiteOk;
 }
@@ -177,24 +194,25 @@ TfLiteStatus GetImage(tflite::ErrorReporter* error_reporter, int frame_width,
   if (!g_is_camera_initialized) {
     TfLiteStatus init_status = InitCamera(error_reporter);
     if (init_status != kTfLiteOk) {
+      am_hal_gpio_output_set(AM_BSP_GPIO_LED_RED);
       return init_status;
     }
     // Drop a few frames until auto exposure is calibrated.
     for (int i = 0; i < kFramesToInitialize; ++i) {
-      hm01b0_blocking_read_oneframe_scaled(frame, frame_width, frame_height,
-                                           channels);
+      hm01b0_blocking_read_oneframe_scaled(&s_HM01B0Cfg, frame, frame_width,
+                                           frame_height, channels);
     }
     g_is_camera_initialized = true;
   }
 
-  hm01b0_blocking_read_oneframe_scaled(frame, frame_width, frame_height,
-                                       channels);
+  hm01b0_blocking_read_oneframe_scaled(&s_HM01B0Cfg, frame, frame_width,
+                                       frame_height, channels);
 
 #ifdef DEMO_HM01B0_FRAMEBUFFER_DUMP_ENABLE
-  // Allow some time to see result of previous inference before dumping image.
-  am_util_delay_ms(2000);
   hm01b0_framebuffer_dump(frame, frame_width * frame_height * channels);
 #endif
 
   return kTfLiteOk;
 }
+
+#endif  // ARDUINO_EXCLUDE_CODE

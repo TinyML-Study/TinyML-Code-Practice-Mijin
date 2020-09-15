@@ -13,13 +13,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#include "tensorflow/lite/micro/examples/person_detection/detection_responder.h"
+#ifndef TENSORFLOW_LITE_MICRO_EXAMPLES_PERSON_DETECTION_ARDUINO_HM01B0_PLATFORM_H_
+#define TENSORFLOW_LITE_MICRO_EXAMPLES_PERSON_DETECTION_ARDUINO_HM01B0_PLATFORM_H_
 
-// This dummy implementation writes person and no person scores to the error
-// console. Real applications will want to take some custom action instead, and
-// should implement their own versions of this function.
-void RespondToDetection(tflite::ErrorReporter* error_reporter,
-                        uint8_t person_score, uint8_t no_person_score) {
-  TF_LITE_REPORT_ERROR(error_reporter, "person score:%d no person score %d",
-                       person_score, no_person_score);
-}
+#if defined(ARDUINO) && defined(ARDUINO_SFE_EDGE)
+#include "hm01b0_platform_edge.h"
+#define HM01B0_PIN_TRIG 0  // unused
+#define HM01B0_PIN_INT 0   // unused
+#endif                     // defined(ARDUINO) && defined(ARDUINO_SFE_EDGE)
+
+#endif  // TENSORFLOW_LITE_MICRO_EXAMPLES_PERSON_DETECTION_ARDUINO_HM01B0_PLATFORM_H_

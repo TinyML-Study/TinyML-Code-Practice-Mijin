@@ -13,8 +13,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#include "tensorflow/lite/micro/examples/person_detection/main_functions.h"
+#include "model_settings.h"
 
-// Arduino automatically calls the setup() and loop() functions in a sketch, so
-// where other systems need their own main routine in this file, it can be left
-// empty.
+const char* kCategoryLabels[kCategoryCount] = {
+    "unused",
+    "person",
+    "notperson",
+};

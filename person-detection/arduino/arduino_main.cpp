@@ -13,14 +13,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#include "tensorflow/lite/micro/examples/person_detection/image_provider.h"
+#include "main_functions.h"
 
-#include "tensorflow/lite/micro/examples/person_detection/model_settings.h"
-
-TfLiteStatus GetImage(tflite::ErrorReporter* error_reporter, int image_width,
-                      int image_height, int channels, uint8_t* image_data) {
-  for (int i = 0; i < image_width * image_height * channels; ++i) {
-    image_data[i] = 0;
-  }
-  return kTfLiteOk;
-}
+// Arduino automatically calls the setup() and loop() functions in a sketch, so
+// where other systems need their own main routine in this file, it can be left
+// empty.

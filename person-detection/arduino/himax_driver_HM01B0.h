@@ -25,13 +25,13 @@ extern "C" {
 #endif
 
 #ifndef ARDUINO_EXCLUDE_CODE
-#include "am_bsp.h"         // NOLINT
-#include "am_mcu_apollo.h"  // NOLINT
-#include "am_util.h"        // NOLINT
+#include "am_bsp.h"
+#include "am_mcu_apollo.h"
+#include "am_util.h"
 #endif                      // ARDUINO_EXCLUDE_CODE
 
 #if defined(ARDUINO)
-#include "tensorflow/lite/micro/examples/person_detection/arduino/HM01B0_platform.h"
+#include "arduino_HM01B0_platform.h"
 #endif  // defined(ARDUINO)
 
 #define HM01B0_DRV_VERSION (0)
@@ -296,6 +296,23 @@ uint32_t hm01b0_init_system(hm01b0_cfg_t *psCfg, hm_script_t *psScript,
 //
 //*****************************************************************************
 uint32_t hm01b0_test_walking1s(hm01b0_cfg_t *psCfg);
+
+//*****************************************************************************
+//
+//! @brief Check the data read from HM01B0 in the walking 1s test mode
+//!
+//! @param pui8Buffer       - Pointer to data buffer.
+//! @param ui32BufferLen    - Buffer length
+//! @param ui32PrintCnt     - Number of mismatched data to be printed out
+//!
+//! This function sets HM01B0 in the walking 1s test mode.
+//!
+//! @return Error code.
+//
+//*****************************************************************************
+void hm01b0_test_walking1s_check_data_sanity(uint8_t *pui8Buffer,
+                                             uint32_t ui32BufferLen,
+                                             uint32_t ui32PrintCnt);
 
 //*****************************************************************************
 //

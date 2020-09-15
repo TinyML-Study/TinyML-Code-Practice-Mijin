@@ -19,10 +19,10 @@ limitations under the License.
 
 #ifndef ARDUINO_EXCLUDE_CODE
 
-#include "HM01B0.h"
-#include "am_bsp.h" //NOLINT
-#include "am_mcu_apollo.h" //NOLINT
-#include "platform.h"      // TARGET specific implementation
+#include "himax_driver_HM01B0.h"
+#include "am_bsp.h"
+#include "am_mcu_apollo.h"
+#include "third_party/gemmlowp/internal/detect_platform.h"
 
 // Image is down-sampled by applying a stride of 2 pixels in both the x and y
 // directions.

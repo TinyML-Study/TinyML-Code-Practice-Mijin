@@ -19,8 +19,8 @@ limitations under the License.
 
 #ifndef ARDUINO_EXCLUDE_CODE
 
-#include "HM01B0_debug.h"
-#include "am_util.h" // NOLINT
+#include "himax_driver_HM01B0_debug.h"
+#include "am_util.h"
 
 void hm01b0_framebuffer_dump(uint8_t* frame, uint32_t length) {
   am_util_stdio_printf("+++ frame +++");

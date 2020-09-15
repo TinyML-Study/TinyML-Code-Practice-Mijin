@@ -19,36 +19,32 @@ limitations under the License.
 
 #ifndef ARDUINO_EXCLUDE_CODE
 
-#include "tensorflow/lite/micro/examples/person_detection/detection_responder.h"
+#include "detection_responder.h"
 
 #include "Arduino.h"
 
-// Flash the blue LED after each inference
 void RespondToDetection(tflite::ErrorReporter* error_reporter,
                         uint8_t person_score, uint8_t no_person_score) {
   static bool is_initialized = false;
   if (!is_initialized) {
-    // Pins for the built-in RGB LEDs on the Arduino Nano 33 BLE Sense
     pinMode(LEDR, OUTPUT);
     pinMode(LEDG, OUTPUT);
     pinMode(LEDB, OUTPUT);
     is_initialized = true;
   }
 
-  // Note: The RGB LEDs on the Arduino Nano 33 BLE
-  // Sense are on when the pin is LOW, off when HIGH.
+  // Note: LOW면 RGB LED가 켜지고 HIGH면 꺼짐
 
-  // Switch the person/not person LEDs off
+  // Person detection LED 끄기
   digitalWrite(LEDG, HIGH);
   digitalWrite(LEDR, HIGH);
 
-  // Flash the blue LED after every inference.
+  // Inference 후에 파란색 LED 깜빡거리기
   digitalWrite(LEDB, LOW);
   delay(100);
   digitalWrite(LEDB, HIGH);
 
-  // Switch on the green LED when a person is detected,
-  // the red when no person is detected
+  // 사람 감지 시 초록색 LED를 켜고 감지되지 않으면 빨간색 LED 켜기
   if (person_score > no_person_score) {
     digitalWrite(LEDG, LOW);
     digitalWrite(LEDR, HIGH);
