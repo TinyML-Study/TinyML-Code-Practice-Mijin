@@ -13,5 +13,6 @@
 
 ## 실습 코드
 
-- [테스트 코드](test)
+- [Chapter 9 테스트 코드](test)
 - [Arduino 실습 코드](arduino)
+- [Chapter 10 실습 코드](https://github.com/meeeejin/til/blob/master/tensorflow/how-to-use-slim.md)
