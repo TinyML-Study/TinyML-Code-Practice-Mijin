@@ -1,4 +1,4 @@
-# Person detection
+# Person Detection
 
 - 테스트 디바이스: [Arduino Nano 33 BLE Sense](https://store.arduino.cc/usa/nano-33-ble-sense)
 
