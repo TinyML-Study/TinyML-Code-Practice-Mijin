@@ -2,7 +2,10 @@
 
 - 테스트 디바이스: [Arduino Nano 33 BLE Sense](https://store.arduino.cc/usa/nano-33-ble-sense)
 
-![micro-speech-for-arduino](https://i.imgur.com/tMZfVPM.gifv)
+## Demo
+
+![micro-speech-for-arduino](micro-speech-arduino.gif)
+
 - "Yes": Green
 - "No": Red
 - "Unknown": Blue
