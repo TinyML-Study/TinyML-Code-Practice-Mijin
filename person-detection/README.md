@@ -4,7 +4,7 @@
 
 ## Demo
 
-![person-detection-for-arduino](person-detection-arduino.jpg)
+<img src="person-detection-arduino.jpg" alt="person-detection-for-arduino" width="400"/>
 
 ## 사전 설치
 
