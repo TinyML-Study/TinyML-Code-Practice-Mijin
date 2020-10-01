@@ -2,6 +2,10 @@
 
 - 테스트 디바이스: [Arduino Nano 33 BLE Sense](https://store.arduino.cc/usa/nano-33-ble-sense)
 
+## Demo
+
+![person-detection-for-arduino](person-detection-arduino.jpg)
+
 ## 사전 설치
 
 - Arduino IDE 내 라이브러리 설치
