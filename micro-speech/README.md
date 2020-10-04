@@ -20,3 +20,5 @@
 
 - Chapter 7
     - [Arduino 실습 코드](arduino)
+- Chapter 8
+    - [Colab 실습 코드](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/lite/micro/examples/micro_speech/train/train_micro_speech_model.ipynb)

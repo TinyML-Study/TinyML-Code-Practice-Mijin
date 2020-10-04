@@ -50,7 +50,7 @@
 - Chapter 11
     - [Arduino 실습 코드](arduino)
 - Chapter 12
-    - [Colab 실습](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/lite/micro/examples/magic_wand/train/train_magic_wand_model.ipynb)
+    - [Colab 실습 코드](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/lite/micro/examples/magic_wand/train/train_magic_wand_model.ipynb)
     
     ![magic-wand-colab-tensorboard](magic-wand-colab-tensorboard.png)
     ```bash
