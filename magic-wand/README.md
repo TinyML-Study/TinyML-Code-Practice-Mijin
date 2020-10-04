@@ -51,9 +51,7 @@
     - [Arduino 실습 코드](arduino)
 - Chapter 12
     - [Colab 실습](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/lite/micro/examples/magic_wand/train/train_magic_wand_model.ipynb)
-    
-    <img src="magic-wand-colab-tensorboard.png" alt="magic-wand-colab-tensorboard" width="500"/>
-    
+    ![magic-wand-colab-tensorboard](magic-wand-colab-tensorboard.png)
     ```bash
     ...
     Epoch 50/50
