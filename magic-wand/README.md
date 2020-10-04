@@ -49,3 +49,24 @@
 
 - Chapter 11
     - [Arduino 실습 코드](arduino)
+- Chapter 12
+    - [Colab 실습](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/lite/micro/examples/magic_wand/train/train_magic_wand_model.ipynb)
+    
+    <img src="magic-wand-colab-tensorboard.png" alt="magic-wand-colab-tensorboard" width="500"/>
+    
+    ```bash
+    ...
+    Epoch 50/50
+    1000/1000 [==============================] - 4s 4ms/step - loss: 0.1028 - accuracy: 0.9729 - val_loss: 0.2299 - val_accuracy: 0.9338
+    6/6 [==============================] - 0s 4ms/step - loss: 0.2319 - accuracy: 0.9245
+    tf.Tensor(
+    [[ 75   3   2   2]
+    [  0  74   2   8]
+    [  1   3  77   7]
+    [  0   0   1 129]], shape=(4, 4), dtype=int32)
+    Loss 0.23189358413219452, Accuracy 0.9244791865348816
+    ...
+    Basic model is 20208 bytes
+    Quantized model is 9696 bytes
+    Difference is 10512 bytes
+    ```
